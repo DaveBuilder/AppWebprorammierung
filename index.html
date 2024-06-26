@@ -23,7 +23,7 @@
         }
         #game-board {
             display: grid;
-            grid-template-columns: repeat(5, 50px);
+            grid-template-columns: repeat(auto-fill, 50px);
             gap: 5px;
             margin-bottom: 20px;
         }
@@ -82,6 +82,15 @@
             font-size: 1.2em;
             color: #ffffff;
         }
+        #word-length-selection, #game-mode-selection, #custom-word-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #custom-word-container {
+            display: none;
+        }
         @media (max-width: 600px) {
             .tile {
                 width: 40px;
@@ -101,6 +110,22 @@
 </head>
 <body>
     <h1>WORDLE</h1>
+    <div id="word-length-selection">
+        <p>Select word length:</p>
+        <button onclick="startGame(3)">3 Letters</button>
+        <button onclick="startGame(4)">4 Letters</button>
+        <button onclick="startGame(5)">5 Letters</button>
+    </div>
+    <div id="game-mode-selection" style="display: none;">
+        <p>Select game mode:</p>
+        <button onclick="selectMode('predefined')">Predefined Words</button>
+        <button onclick="selectMode('custom')">Enter Your Own Word</button>
+    </div>
+    <div id="custom-word-container">
+        <p>Enter your word (3-5 letters):</p>
+        <input type="text" id="custom-word-input" maxlength="5" />
+        <button onclick="setCustomWord()">Start</button>
+    </div>
     <div id="game-board"></div>
     <div class="keyboard">
         <button>A</button>
@@ -134,19 +159,57 @@
     </div>
     <div id="score">Score: 0</div>
     <script>
-        const words = ['apple', 'bread', 'crane', 'drape', 'eagle']; // You can expand this word list
-        let selectedWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
+        const words = {
+            3: ['cat', 'dog', 'sun', 'fun'],
+            4: ['pear', 'door', 'moon', 'tree'],
+            5: ['apple', 'bread', 'crane', 'drape', 'eagle']
+        };
+        let selectedWord = '';
+        let wordLength = 5;
         const gameBoard = document.getElementById('game-board');
         const keyboardButtons = document.querySelectorAll('.keyboard button');
         const scoreElement = document.getElementById('score');
+        const customWordContainer = document.getElementById('custom-word-container');
+        const customWordInput = document.getElementById('custom-word-input');
         let score = 0;
-
         let currentRow = 0;
         let currentTile = 0;
-        const rows = 6;
-        const cols = 5;
+        let rows = 6;
+        let cols = 5;
+
+        function startGame(length) {
+            wordLength = length;
+            cols = wordLength;
+            currentRow = 0;
+            currentTile = 0;
+            document.getElementById('word-length-selection').style.display = 'none';
+            document.getElementById('game-mode-selection').style.display = 'flex';
+            gameBoard.innerHTML = '';
+            createBoard();
+        }
+
+        function selectMode(mode) {
+            if (mode === 'predefined') {
+                selectedWord = words[wordLength][Math.floor(Math.random() * words[wordLength].length)].toUpperCase();
+                document.getElementById('game-mode-selection').style.display = 'none';
+            } else {
+                customWordContainer.style.display = 'flex';
+                document.getElementById('game-mode-selection').style.display = 'none';
+            }
+        }
+
+        function setCustomWord() {
+            const word = customWordInput.value.trim().toUpperCase();
+            if (word.length >= 3 && word.length <= 5) {
+                selectedWord = word;
+                customWordContainer.style.display = 'none';
+            } else {
+                alert('Please enter a word between 3 and 5 letters.');
+            }
+        }
 
         function createBoard() {
+            gameBoard.style.gridTemplateColumns = `repeat(${cols}, 50px)`;
             for (let i = 0; i < rows * cols; i++) {
                 const tile = document.createElement('div');
                 tile.classList.add('tile');
@@ -231,8 +294,12 @@
             currentRow = 0;
             currentTile = 0;
             gameBoard.innerHTML = '';
-            createBoard();
-            selectedWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
+            if (failed) {
+                document.getElementById('word-length-selection').style.display = 'flex';
+                document.getElementById('game-mode-selection').style.display = 'none';
+            } else {
+                selectedWord = words[wordLength][Math.floor(Math.random() * words[wordLength].length)].toUpperCase();
+            }
             scoreElement.textContent = `Score: ${score}`;
         }
 
