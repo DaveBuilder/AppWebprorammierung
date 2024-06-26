@@ -1,11 +1,11 @@
 {
-  "name": "Hangman Game",
-  "short_name": "Hangman",
+  "name": "Wordle Game",
+  "short_name": "Wordle",
+  "description": "A simple Wordle-like game",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#f0f0f0",
   "theme_color": "#333333",
-  "description": "A simple Hangman game",
   "icons": [
     {
       "src": "icons/icon-192x192.png",
