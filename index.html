@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        #word {
+            font-size: 2em;
+            letter-spacing: 0.5em;
+        }
+        #wrong-letters {
+            margin-top: 20px;
+            color: red;
+        }
+        .keyboard {
+            margin-top: 20px;
+        }
+        .keyboard button {
+            font-size: 1em;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hangman Game</h1>
+    <div id="word">_ _ _ _ _</div>
+    <div id="wrong-letters"></div>
+    <div class="keyboard">
+        <button>A</button>
+        <button>B</button>
+        <button>C</button>
+        <button>D</button>
+        <button>E</button>
+        <button>F</button>
+        <button>G</button>
+        <button>H</button>
+        <button>I</button>
+        <button>J</button>
+        <button>K</button>
+        <button>L</button>
+        <button>M</button>
+        <button>N</button>
+        <button>O</button>
+        <button>P</button>
+        <button>Q</button>
+        <button>R</button>
+        <button>S</button>
+        <button>T</button>
+        <button>U</button>
+        <button>V</button>
+        <button>W</button>
+        <button>X</button>
+        <button>Y</button>
+        <button>Z</button>
+    </div>
+    <script>
+        const wordElement = document.getElementById('word');
+        const wrongLettersElement = document.getElementById('wrong-letters');
+        const keyboardButtons = document.querySelectorAll('.keyboard button');
+
+        const words = ['javascript', 'hangman', 'developer', 'programming'];
+        let selectedWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
+        let correctLetters = [];
+        let wrongLetters = [];
+
+        function displayWord() {
+            wordElement.innerHTML = selectedWord
+                .split('')
+                .map(letter => (correctLetters.includes(letter) ? letter : '_'))
+                .join(' ');
+        }
+
+        function updateWrongLetters() {
+            wrongLettersElement.textContent = wrongLetters.join(' ');
+        }
+
+        function handleGuess(letter) {
+            if (selectedWord.includes(letter)) {
+                if (!correctLetters.includes(letter)) {
+                    correctLetters.push(letter);
+                }
+            } else {
+                if (!wrongLetters.includes(letter)) {
+                    wrongLetters.push(letter);
+                }
+            }
+
+            displayWord();
+            updateWrongLetters();
+        }
+
+        keyboardButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const letter = button.textContent;
+                handleGuess(letter);
+                button.disabled = true;
+            });
+        });
+
+        displayWord();
+    </script>
+</body>
+</html>
