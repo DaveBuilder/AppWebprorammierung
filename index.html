@@ -82,14 +82,6 @@
             font-size: 1.2em;
             color: #ffffff;
         }
-        #mode-selection {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .hidden {
-            display: none;
-        }
         @media (max-width: 600px) {
             .tile {
                 width: 40px;
@@ -109,13 +101,8 @@
 </head>
 <body>
     <h1>WORDLE</h1>
-    <div id="mode-selection">
-        <button onclick="startGame(3)">3 Letters</button>
-        <button onclick="startGame(4)">4 Letters</button>
-        <button onclick="startGame(5)">5 Letters</button>
-    </div>
-    <div id="game-board" class="hidden"></div>
-    <div class="keyboard hidden">
+    <div id="game-board"></div>
+    <div class="keyboard">
         <button>A</button>
         <button>B</button>
         <button>C</button>
@@ -147,33 +134,19 @@
     </div>
     <div id="score">Score: 0</div>
     <script>
-        const words = {
-            3: ['cat', 'dog', 'sun'],
-            4: ['pear', 'door', 'moon'],
-            5: ['apple', 'bread', 'crane', 'drape', 'eagle']
-        };
-        let selectedWord = '';
+        const words = ['apple', 'bread', 'crane', 'drape', 'eagle']; // You can expand this word list
+        let selectedWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
         const gameBoard = document.getElementById('game-board');
         const keyboardButtons = document.querySelectorAll('.keyboard button');
         const scoreElement = document.getElementById('score');
         let score = 0;
+
         let currentRow = 0;
         let currentTile = 0;
         const rows = 6;
-        let cols = 5;
-
-        function startGame(wordLength) {
-            cols = wordLength;
-            selectedWord = words[wordLength][Math.floor(Math.random() * words[wordLength].length)].toUpperCase();
-            document.getElementById('mode-selection').classList.add('hidden');
-            gameBoard.classList.remove('hidden');
-            document.querySelector('.keyboard').classList.remove('hidden');
-            createBoard();
-        }
+        const cols = 5;
 
         function createBoard() {
-            gameBoard.innerHTML = '';
-            gameBoard.style.gridTemplateColumns = `repeat(${cols}, 50px)`;
             for (let i = 0; i < rows * cols; i++) {
                 const tile = document.createElement('div');
                 tile.classList.add('tile');
@@ -258,8 +231,8 @@
             currentRow = 0;
             currentTile = 0;
             gameBoard.innerHTML = '';
-            selectedWord = words[cols][Math.floor(Math.random() * words[cols].length)].toUpperCase();
             createBoard();
+            selectedWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
             scoreElement.textContent = `Score: ${score}`;
         }
 
@@ -285,6 +258,8 @@
                 handleKeyClick(e.key.toUpperCase());
             }
         });
+
+        createBoard();
     </script>
 </body>
 </html>
