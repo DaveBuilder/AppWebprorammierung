@@ -134,7 +134,17 @@
     </div>
     <div id="score">Score: 0</div>
     <script>
-        const words = ['apple', 'bread', 'crane', 'drape', 'eagle']; // You can expand this word list
+    const words = [
+            'apple', 'bread', 'crane', 'drape', 'eagle', 'frost', 'grape', 'horse', 'image', 'joker',
+            'knife', 'lemon', 'mango', 'night', 'ocean', 'peace', 'queen', 'river', 'stone', 'tiger',
+            'uncle', 'vivid', 'waste', 'xenon', 'young', 'zebra', 'alarm', 'beach', 'cabin', 'dance',
+            'empty', 'flame', 'globe', 'happy', 'index', 'joker', 'kiosk', 'light', 'magic', 'never',
+            'opera', 'plumb', 'query', 'robin', 'shark', 'table', 'under', 'video', 'wheel', 'xerox',
+            'yield', 'zesty', 'about', 'above', 'abuse', 'actor', 'admit', 'adopt', 'adult', 'after',
+            'again', 'agent', 'agree', 'ahead', 'alarm', 'album', 'alert', 'alien', 'alike', 'alive',
+            'allow', 'alone', 'along', 'alter', 'among', 'anger', 'angle', 'angry', 'apart', 'apple',
+            'apply', 'argue', 'arise', 'array', 'aside', 'asset', 'audio', 'audit', 'avoid', 'await'
+        ];
         let selectedWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
         const gameBoard = document.getElementById('game-board');
         const keyboardButtons = document.querySelectorAll('.keyboard button');
