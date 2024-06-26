@@ -51,30 +51,51 @@
             color: white;
         }
         .keyboard {
-            display: grid;
-            grid-template-columns: repeat(10, 40px);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 5px;
             margin-top: 20px;
+            width: 100%;
+            max-width: 400px;
         }
         .keyboard button {
-            width: 40px;
+            width: calc(10% - 10px);
             height: 40px;
             font-size: 1em;
             cursor: pointer;
             background-color: #1e1e1e;
             color: orange;
             border: 2px solid #333;
+            flex: 1 0 18%;
+            max-width: 40px;
         }
         .keyboard button:hover {
             background-color: #333;
         }
         .keyboard #enter, .keyboard #delete {
-            grid-column: span 2;
+            flex: 1 0 36%;
+            max-width: 80px;
         }
         #score {
             margin-top: 20px;
             font-size: 1.2em;
             color: #ffffff;
+        }
+        @media (max-width: 600px) {
+            .tile {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+            .keyboard button {
+                height: 35px;
+                max-width: 35px;
+                font-size: 0.9em;
+            }
+            .keyboard #enter, .keyboard #delete {
+                max-width: 70px;
+            }
         }
     </style>
 </head>
@@ -164,12 +185,12 @@
                 setTimeout(() => {
                     alert('Congratulations! You guessed the word!');
                     score += 10;
-                    resetGame();
+                    resetGame(false);
                 }, 100);
             } else if (currentRow === rows - 1) {
                 setTimeout(() => {
                     alert('Game Over! The word was: ' + selectedWord);
-                    resetGame();
+                    resetGame(true);
                 }, 100);
             } else {
                 currentRow++;
@@ -203,12 +224,16 @@
             }
         }
 
-        function resetGame() {
+        function resetGame(failed) {
+            if (failed) {
+                score = 0;
+            }
             currentRow = 0;
             currentTile = 0;
             gameBoard.innerHTML = '';
             createBoard();
             selectedWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
+            scoreElement.textContent = `Score: ${score}`;
         }
 
         keyboardButtons.forEach(button => {
@@ -238,4 +263,3 @@
     </script>
 </body>
 </html>
-
